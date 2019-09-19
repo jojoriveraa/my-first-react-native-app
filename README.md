@@ -1,8 +1,5 @@
 # my-first-react-native-app
 
-# Run in emulator
-
-
 ## Available Scripts
 
 ### `react-native run-ios`
