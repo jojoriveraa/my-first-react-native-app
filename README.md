@@ -2,6 +2,11 @@
 
 # Run in emulator
 
-## iOS `cd my-first-react-native-app && react-native run-ios`
 
-## Android  `cd my-first-react-native-app && react-native run-android`
+## Available Scripts
+
+### iOS
+### `cd my-first-react-native-app && react-native run-ios`
+
+### Android
+###  `cd my-first-react-native-app && react-native run-android`
