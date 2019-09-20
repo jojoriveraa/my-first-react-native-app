@@ -1,11 +1,7 @@
-/**
- * @format
- */
-
 import React from 'react';
 import 'react-native';
-import {Text} from 'react-native';
-import App from '../App';
+import App from '../app/index';
+import Contacts from "../app/screens/Contacts";
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
@@ -17,11 +13,8 @@ describe('App', () => {
     expect(appRenderer).toMatchSnapshot();
   });
 
-  describe('Landing page', () => {
-    const textComponents = appInstance.findAllByType(Text);
-    const textComponentsValues = textComponents.map(t => t.props.children)
-    it('should contain `Welcome to React` message', () => {
-      expect(textComponentsValues).toContain('Welcome to React');
-    });
+  it('should contains <Contacts>', () => {
+    const contactsComponent = appInstance.findAllByType(Contacts);
+    expect(contactsComponent).not.toBeNull();
   });
 });
