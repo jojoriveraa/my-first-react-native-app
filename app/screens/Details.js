@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 
-class Contacts extends Component {
+class Details extends Component {
   render() {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>Contacts Screen</Text>
+        <Text>Details Screen</Text>
       </View>
     );
   }
 }
 
-export default Contacts;
+export default Details;
