@@ -13,7 +13,8 @@ describe('[Screen] Contacts', () => {
   });
 
   it('should contain `Contacts screen`', () => {
-    const textComponentValue = contactsInstance.findByType(Text).props.children;
+    const textComponentValue = contactsInstance.findAllByType(Text)[0].props
+      .children;
     expect(textComponentValue).toEqual('Contacts Screen');
   });
 
