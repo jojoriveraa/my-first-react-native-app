@@ -7,7 +7,7 @@ describe('[Screen] Contacts', () => {
   const contactsRenderer = renderer.create(<Contacts />);
   const contactsInstance = contactsRenderer.root;
 
-  it('renders correctly', () => {
+  it('should render correctly', () => {
     expect(contactsRenderer).toMatchSnapshot();
   });
 
