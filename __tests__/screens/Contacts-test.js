@@ -12,49 +12,61 @@ describe('[Screen] Contacts', () => {
     expect(contactsRenderer).toMatchSnapshot();
   });
 
-  it('should contain `Contacts screen`', () => {
+  it('should contain `Contacts screen` title', () => {
     const textComponentValue = contactsInstance.findAllByType(Text)[0].props
       .children;
     expect(textComponentValue).toEqual('Contacts Screen');
   });
+  it('should contain a list of contacts', () => {
+    const flatListComponent = contactsInstance.findByType(FlatList);
+    expect(flatListComponent).not.toBeNull();
+  });
 
-  describe('the contained <FlatList>', () => {
-    it('should render correctly', () => {
-      const flatListComponent = contactsInstance.findByType(FlatList);
-      expect(flatListComponent).not.toBeNull();
+  describe('when the list of contacts is initialized', () => {
+    let contactsRenderer;
+    let instance;
+    let contactsList;
+
+    let spyDidMount = jest.spyOn(Contacts.prototype, 'componentDidMount');
+    let spyLoadData = jest
+      .spyOn(Contacts.prototype, 'loadData')
+      .mockImplementation(() => mocks.contacts);
+
+    beforeEach(() => {
+      contactsRenderer = renderer.create(<Contacts />);
+      instance = contactsRenderer.root;
+      contactsList = instance.findByType(FlatList);
     });
 
-    describe('when mounted', () => {
-      const spyDidMount = jest.spyOn(Contacts.prototype, 'componentDidMount');
-      const spyLoadData = jest.spyOn(Contacts.prototype, 'loadData');
+    afterEach(() => {
+      spyDidMount.mockClear();
+      spyLoadData.mockClear();
+    });
+
+    it('should invoke `componentDidMount`', () => {
+      expect(spyDidMount).toHaveBeenCalled();
+    });
+
+    it('should invoke `loadData`', () => {
+      expect(spyLoadData).toHaveBeenCalled();
+    });
+
+    describe('and contacts list is shown', () => {
+      let contactsEmails;
 
       beforeEach(() => {
-        renderer.create(<Contacts />);
+        contactsEmails = contactsList.findAllByType(Text);
       });
 
-      it('should invoke `componentDidMount`', () => {
-        expect(spyDidMount).toHaveBeenCalled();
-        spyDidMount.mockRestore();
+      it('should display all the items', () => {
+        expect(contactsEmails.length).toEqual(mocks.contacts.length);
       });
 
-      it('should invoke `loadData`', () => {
-        expect(spyLoadData).toHaveBeenCalled();
-        spyLoadData.mockRestore();
+      it('should display contacts` email', () => {
+        const expectedEmails = mocks.contacts.map(item => item.email);
+        const actualEmails = contactsEmails.map(item => item.props.children);
+        expect(actualEmails).toEqual(expect.arrayContaining(expectedEmails));
       });
-    });
-
-    it('should display contact`s email', () => {
-      const spy = jest
-        .spyOn(Contacts.prototype, 'loadData')
-        .mockImplementation(() => mocks.contacts);
-      const mockRenderer = renderer.create(<Contacts />);
-      const mockInstance = mockRenderer.root;
-      const flatListComponent = mockInstance.findByType(FlatList);
-      const contactEmail = flatListComponent.findByType(Text);
-      expect(flatListComponent).not.toBeNull();
-      expect(contactEmail).not.toBeNull();
-      expect(contactEmail.props.children).toEqual('marina.hauser@example.com')
-      spy.mockRestore();
     });
   });
 });
