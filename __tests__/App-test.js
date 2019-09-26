@@ -14,7 +14,7 @@ describe('App', () => {
   });
 
   it('should contains <Contacts>', () => {
-    const contactsComponent = appInstance.findAllByType(Contacts);
+    const contactsComponent = appInstance.findByType(Contacts);
     expect(contactsComponent).not.toBeNull();
   });
 });
