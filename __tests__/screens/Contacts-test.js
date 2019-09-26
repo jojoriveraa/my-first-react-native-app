@@ -18,29 +18,43 @@ describe('[Screen] Contacts', () => {
     expect(textComponentValue).toEqual('Contacts Screen');
   });
 
-  it('should render a <FlatList> correctly', () => {
-    const flatListComponent = contactsInstance.findByType(FlatList);
-    expect(flatListComponent).not.toBeNull();
-  });
-
-  describe('<FlatList> is mounted', () => {
-    const spyDidMount = jest.spyOn(Contacts.prototype, 'componentDidMount');
-    const spyLoadData = jest.spyOn(Contacts.prototype, 'loadData');
-
-
-    afterEach(() => {
-      spyLoadData.mockRestore();
-      spyDidMount.mockRestore();
+  describe('the contained <FlatList>', () => {
+    it('should render correctly', () => {
+      const flatListComponent = contactsInstance.findByType(FlatList);
+      expect(flatListComponent).not.toBeNull();
     });
 
-    it('should invoke `componentDidMount`', () => {
-      renderer.create(<Contacts />);
-      expect(spyDidMount).toHaveBeenCalled();
+    describe('when mounted', () => {
+      const spyDidMount = jest.spyOn(Contacts.prototype, 'componentDidMount');
+      const spyLoadData = jest.spyOn(Contacts.prototype, 'loadData');
+
+      beforeEach(() => {
+        renderer.create(<Contacts />);
+      });
+
+      it('should invoke `componentDidMount`', () => {
+        expect(spyDidMount).toHaveBeenCalled();
+        spyDidMount.mockRestore();
+      });
+
+      it('should invoke `loadData`', () => {
+        expect(spyLoadData).toHaveBeenCalled();
+        spyLoadData.mockRestore();
+      });
     });
 
-    it('should invoke `loadData`', () => {
-      renderer.create(<Contacts />);
-      expect(spyLoadData).toHaveBeenCalled();
+    it('should display contact`s email', () => {
+      const spy = jest
+        .spyOn(Contacts.prototype, 'loadData')
+        .mockImplementation(() => mocks.contacts);
+      const mockRenderer = renderer.create(<Contacts />);
+      const mockInstance = mockRenderer.root;
+      const flatListComponent = mockInstance.findByType(FlatList);
+      const contactEmail = flatListComponent.findByType(Text);
+      expect(flatListComponent).not.toBeNull();
+      expect(contactEmail).not.toBeNull();
+      expect(contactEmail.props.children).toEqual('marina.hauser@example.com')
+      spy.mockRestore();
     });
   });
 });
